@@ -5,9 +5,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.res.AssetManager;
 import android.util.Log;
 
-//import com.google.gson.Gson;
+import com.google.gson.Gson;
 
 
 import java.io.BufferedReader;
@@ -16,6 +17,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.BufferedWriter;
@@ -32,37 +34,26 @@ import java.util.Locale;
 import static android.content.Context.MODE_PRIVATE;
 
 public class JsonParse {
+
     private String LOG_TAG = "mylogs";
-    private final String FILENAME = "Package.txt"; // имя файла
+
+    Context ctn;
+    public final String listGroup = "Group.json"; // Файл расписания
+
 
     //выгрузка из файла пакетов
-    public String importJsonInFile(Context ctn){
+    private String importJsonInFile(String filename){
 
-//        Gson gson = new Gson();
+        Gson gson = new Gson();
 
         String jsonString="";
 
         try {
-            // открываем поток для чтения
-            File file = new File(ctn.getFilesDir(),FILENAME);
-            FileInputStream fileReader = new FileInputStream(file);
-
-            BufferedReader br = new BufferedReader(new InputStreamReader(
-                    ctn.openFileInput(FILENAME)));
-
-            // читаем содержимое
-            try {
-                StringBuilder sb=  new StringBuilder();
-                while ( (jsonString=br.readLine()) != null) {
-                    sb.append(jsonString);
-                }
-                jsonString = sb.toString();
-                br.close();
-                fileReader.close();
-            } catch (IOException e)
-            {
-                e.printStackTrace();
-            }
+            AssetManager am = ctn.getAssets();
+            InputStream is = am.open(filename);
+            String s = convertStreamToString(is);
+            is.close();
+            return s;
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -75,5 +66,25 @@ public class JsonParse {
         //return true;
     }
 
+    private String convertStreamToString(InputStream is) {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+        StringBuilder sb = new StringBuilder();
+
+        String line = null;
+        try {
+            while ((line = reader.readLine()) != null) {
+                sb.append(line).append('\n');
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                is.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return sb.toString();
+    }
 }
 
