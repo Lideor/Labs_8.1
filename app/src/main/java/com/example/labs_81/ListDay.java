@@ -8,16 +8,7 @@ import java.util.Map;
 public class ListDay {
 
     private int start=0;
-    private String nameDate;
     private Map<Integer, Lesson> map = new HashMap<Integer, Lesson>();
-
-    public String getNameDate() {
-        return nameDate;
-    }
-
-    ListDay (String nameDate) {
-        this.nameDate = nameDate;
-    }
 
     public Lesson getLesson(int timeStart){
         return map.get(timeStart);
