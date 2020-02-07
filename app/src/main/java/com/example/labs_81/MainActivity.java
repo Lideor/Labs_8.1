@@ -9,6 +9,7 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,6 +18,9 @@ public class MainActivity extends AppCompatActivity {
 
     private SharedPreferences sPref;// файл с настройками
     private int numberGroup;// текущая группа
+    private String LOG_TAG = "mylogs";
+
+    private AllGroup group;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +29,14 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        group = new JsonParse().importJsonInFile(this);
+        int n = 0;
+        try {
+            n = group.listGroup.get("405").getDay(1, "Mn").getLesson(4).getType();
+        }  catch (ArithmeticException e) {
+            Log.d(LOG_TAG,e.toString());
+        }
+        Log.d(LOG_TAG,n+" надеюсь это сраотает ");
         if(getNumberGroup()){
 
         }

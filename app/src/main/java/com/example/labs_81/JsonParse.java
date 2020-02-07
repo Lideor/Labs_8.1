@@ -9,6 +9,7 @@ import android.content.res.AssetManager;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 
 import java.io.BufferedReader;
@@ -37,54 +38,44 @@ public class JsonParse {
 
     private String LOG_TAG = "mylogs";
 
+
     Context ctn;
     public final String listGroup = "Group.json"; // Файл расписания
 
 
     //выгрузка из файла пакетов
-    private String importJsonInFile(String filename){
-
-        Gson gson = new Gson();
-
-        String jsonString="";
-
+    public AllGroup importJsonInFile(Context ctn){
+        String jsonString = convertStreamToString(ctn);
+        Gson gson = new GsonBuilder().create();
+        AllGroup data = null;
         try {
-            AssetManager am = ctn.getAssets();
-            InputStream is = am.open(filename);
-            String s = convertStreamToString(is);
-            is.close();
-            return s;
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+             data = gson.fromJson(jsonString, AllGroup.class);
+        } catch (ArithmeticException e) {
+             Log.d(LOG_TAG,e.toString());
         }
-
-        Log.d(LOG_TAG,jsonString);
-        return jsonString;
+        return data;
         //return true;
     }
 
-    private String convertStreamToString(InputStream is) {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-        StringBuilder sb = new StringBuilder();
+    private String convertStreamToString(Context ctn) {
+
 
         String line = null;
+        BufferedReader reader;
+        String out = null;
+        StringBuilder sb=null;
         try {
+            AssetManager assetManager = ctn.getAssets();
+            reader = new BufferedReader(new InputStreamReader(assetManager.open("Group.json")));
+             sb = new StringBuilder();
             while ((line = reader.readLine()) != null) {
                 sb.append(line).append('\n');
             }
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                is.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
-        return sb.toString();
+        if(sb!=null) out = sb.toString();
+        return out;
     }
 }
 

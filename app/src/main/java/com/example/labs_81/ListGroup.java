@@ -8,7 +8,6 @@ import java.util.Map;
 
 public class ListGroup {
 
-    private int numberGroup;
     private List<Map<String, ListDay>> dayList= new ArrayList();
 
     ListGroup(int numberGroup){
