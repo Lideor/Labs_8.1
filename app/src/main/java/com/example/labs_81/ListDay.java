@@ -1,5 +1,7 @@
 package com.example.labs_81;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -8,13 +10,13 @@ import java.util.Map;
 public class ListDay {
 
     private int start=0;
-    private Map<Integer, Lesson> map = new HashMap<Integer, Lesson>();
+    @JsonProperty("Number")
+    private int number;
 
-    public Lesson getLesson(int timeStart){
-        return map.get(timeStart);
-    }
+    @JsonProperty("Days")
+    private List<Day> Days = new ArrayList<Day>();
 
-    public void addLesson(int timeStart, Lesson lesson){
+  /*  public void addLesson(int timeStart, Lesson lesson){
         map.put(timeStart,lesson);
         if(timeStart<start) start=timeStart;
     }
@@ -26,5 +28,5 @@ public class ListDay {
     public int getSize(){
         return map.size();
     }
-
+*/
 }

@@ -4,5 +4,5 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class AllGroup {
-    Map<String,ListGroup> listGroup = new HashMap<String,ListGroup>();
+    Map<Integer,ListGroup> listGroup = new HashMap<Integer,ListGroup>();
 }

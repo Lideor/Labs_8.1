@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         group = new JsonParse().importJsonInFile(this);
         int n = 0;
         try {
-            n = group.listGroup.get("405").getDay(1, "Mn").getLesson(4).getType();
+      //      n = group.listGroup.get("405").getDay(1, "Mn").getLesson(4).getType();
         }  catch (ArithmeticException e) {
             Log.d(LOG_TAG,e.toString());
         }
