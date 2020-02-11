@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.tabs.TabLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -17,19 +18,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import android.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.app.AppCompatActivity;
-public class MainActivity extends Activity {
+import androidx.cardview.widget.CardView;
+
+public class MainActivity extends AppCompatActivity  {
 
     private SharedPreferences sPref;// файл с настройками
     private int numberGroup;// текущая группа
     public static String LOG_TAG = "mylogs";
 
-
+    private MenuItem editMenuItem;
+    private MenuItem removeMenuItem;
 
     private AllGroup group;
     private DataBase data;
@@ -45,6 +48,11 @@ public class MainActivity extends Activity {
         group = new JsonParse().importGroupJsonInFile(this);
         data = new JsonParse().importDataJsonInFile(this);
 
+        TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
+        tabs.addTab(tabs.newTab().setText("1 неделя"));
+        tabs.addTab(tabs.newTab().setText("2 неделя"));
+
+
         int n = 0;
         try {
 
@@ -52,9 +60,7 @@ public class MainActivity extends Activity {
             Log.d(LOG_TAG,e.toString());
         }
         Log.d(LOG_TAG,n+" надеюсь это сраотает ");
-        if(getNumberGroup()){
 
-        }
 
 
     }
@@ -69,7 +75,18 @@ public class MainActivity extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        editMenuItem = menu.findItem(R.id.action_edit);
         return true;
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.equals(editMenuItem)) {
+            Intent intent = new Intent(MainActivity.this, ChoiceGroup.class);
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
 }

@@ -1,6 +1,10 @@
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="searchViewStyle">@style/AppSearchViewStyle</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
     <style name="AppSearchViewStyle" parent="Widget.AppCompat.SearchView">
         <item name="queryBackground">@android:color/transparent</item>

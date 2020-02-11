@@ -1,11 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:yourapp="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_search"
-        android:title="@android:string/search_go"
-        android:icon="@drawable/ic_launcher_background"
-        yourapp:showAsAction="always|collapseActionView" />
-    <item
         android:id="@+id/action_edit"
         android:title="54656"
         android:icon="@drawable/ic_launcher_background"
