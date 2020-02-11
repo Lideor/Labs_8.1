@@ -1,5 +1,6 @@
 package com.example.labs_81;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -18,9 +19,12 @@ public class MainActivity extends AppCompatActivity {
 
     private SharedPreferences sPref;// файл с настройками
     private int numberGroup;// текущая группа
-    private String LOG_TAG = "mylogs";
+    public static String LOG_TAG = "mylogs";
+
+
 
     private AllGroup group;
+    private DataBase data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,10 +33,12 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        group = new JsonParse().importJsonInFile(this);
+        group = new JsonParse().importGroupJsonInFile(this);
+        data = new JsonParse().importDataJsonInFile(this);
+
         int n = 0;
         try {
-      //      n = group.listGroup.get("405").getDay(1, "Mn").getLesson(4).getType();
+
         }  catch (ArithmeticException e) {
             Log.d(LOG_TAG,e.toString());
         }
@@ -72,7 +78,8 @@ public class MainActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
+        Intent intent = new Intent(MainActivity.this, ChoiceGroup.class);
+        startActivity(intent);
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;

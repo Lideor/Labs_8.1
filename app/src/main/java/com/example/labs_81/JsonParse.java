@@ -41,11 +41,12 @@ public class JsonParse {
 
     Context ctn;
     public final String listGroup = "Group.json"; // Файл расписания
+    public final String listData = "Data.json"; // Файл расписания
 
 
     //выгрузка из файла пакетов
-    public AllGroup importJsonInFile(Context ctn){
-        String jsonString = convertStreamToString(ctn);
+    public AllGroup importGroupJsonInFile(Context ctn){
+        String jsonString = convertStreamToString(ctn,listGroup);
         Gson gson = new GsonBuilder().create();
         AllGroup data = null;
         try {
@@ -54,10 +55,22 @@ public class JsonParse {
              Log.d(LOG_TAG,e.toString());
         }
         return data;
-        //return true;
     }
 
-    private String convertStreamToString(Context ctn) {
+    //выгрузка из файла пакетов
+    public DataBase importDataJsonInFile(Context ctn){
+        String jsonString = convertStreamToString(ctn,listData);
+        Gson gson = new GsonBuilder().create();
+        DataBase data = null;
+        try {
+            data = gson.fromJson(jsonString, DataBase.class);
+        } catch (ArithmeticException e) {
+            Log.d(LOG_TAG,e.toString());
+        }
+        return data;
+    }
+
+    private String convertStreamToString(Context ctn, String fileName) {
 
 
         String line = null;
@@ -66,7 +79,7 @@ public class JsonParse {
         StringBuilder sb=null;
         try {
             AssetManager assetManager = ctn.getAssets();
-            reader = new BufferedReader(new InputStreamReader(assetManager.open("Group.json")));
+            reader = new BufferedReader(new InputStreamReader(assetManager.open(fileName)));
              sb = new StringBuilder();
             while ((line = reader.readLine()) != null) {
                 sb.append(line).append('\n');
