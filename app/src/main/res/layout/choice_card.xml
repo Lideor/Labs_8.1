@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-    <androidx.cardview.widget.CardView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/card"
-        android:clickable="true"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:foreground="?android:attr/selectableItemBackground"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/tools"
+    android:id="@+id/card"
+    android:clickable="true"
+    android:focusable="false"
+    android:focusableInTouchMode="false"
+    android:foreground="?android:attr/selectableItemBackground"
 
-        android:layout_width="394dp"
-        android:layout_height="59dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="2.5dp"
-        android:radius="8dp"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="2dp"
-        app:cardPreventCornerOverlap="true"
-        app:cardUseCompatPadding="true">
-
+    android:layout_width="394dp"
+    android:layout_height="59dp"
+    android:layout_gravity="center"
+    android:layout_marginTop="2.5dp"
+    android:radius="8dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="2dp"
+    app:cardPreventCornerOverlap="true"
+    app:cardUseCompatPadding="true"
+    card_view:background="@color/colorMainCard">
     <TextView
         android:id="@+id/info_text"
 

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -24,6 +25,7 @@ import java.util.List;
 import static com.example.labs_81.MainActivity.LOG_TAG;
 
 public class ChoiceGroup extends AppCompatActivity {
+    private SharedPreferences sPref;// файл с настройками
 
     private AllGroup group;// список всех групп
     private DataBase data;// дополнительная информация
@@ -31,12 +33,15 @@ public class ChoiceGroup extends AppCompatActivity {
     private MenuItem editMenuItem;
     private MenuItem removeMenuItem;
     private LinearLayout linearLayout;
+    private String numberGroup;// текущая группа
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choice_group);
         RecyclerView rv = (RecyclerView)findViewById(R.id.rv);
+        getNumberGroup();
 
         LinearLayoutManager llm = new LinearLayoutManager(this);
         rv.setLayoutManager(llm);
@@ -53,9 +58,9 @@ public class ChoiceGroup extends AppCompatActivity {
 
 
         listNameGroup = group.getListGroup();
-        RVAdapterChoice adapter = new RVAdapterChoice(listNameGroup,listNameGroup.get(2),this);
+        RVAdapterChoice adapter = new RVAdapterChoice(listNameGroup,numberGroup,this);
         rv.setAdapter(adapter);
-rv.setOnClickListener(new View.OnClickListener() {
+        rv.setOnClickListener(new View.OnClickListener() {
 
     @Override
     public void onClick(View view) {
@@ -72,7 +77,12 @@ rv.setOnClickListener(new View.OnClickListener() {
 
     }
 
-
+    private boolean getNumberGroup() {
+        sPref = getSharedPreferences("prefs",MODE_PRIVATE);
+        numberGroup = sPref.getString("numberGroup", "-1");
+        if (numberGroup.equals("-1")) return false;
+        else return true;
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

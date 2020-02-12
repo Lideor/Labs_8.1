@@ -28,7 +28,7 @@ import androidx.cardview.widget.CardView;
 public class MainActivity extends AppCompatActivity  {
 
     private SharedPreferences sPref;// файл с настройками
-    private int numberGroup;// текущая группа
+    private String numberGroup;// текущая группа
     public static String LOG_TAG = "mylogs";
 
     private MenuItem editMenuItem;
@@ -36,13 +36,18 @@ public class MainActivity extends AppCompatActivity  {
 
     private AllGroup group;
     private DataBase data;
-
+    Toolbar mActionBarToolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar mActionBarToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
+        mActionBarToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
+        if(getNumberGroup()) {
+            mActionBarToolbar.setTitle(numberGroup);
+        } else{
+            mActionBarToolbar.setTitle("Выберите группу");
+        }
         setSupportActionBar(mActionBarToolbar);
 
         group = new JsonParse().importGroupJsonInFile(this);
@@ -51,7 +56,6 @@ public class MainActivity extends AppCompatActivity  {
         TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
         tabs.addTab(tabs.newTab().setText("1 неделя"));
         tabs.addTab(tabs.newTab().setText("2 неделя"));
-
 
         int n = 0;
         try {
@@ -64,14 +68,24 @@ public class MainActivity extends AppCompatActivity  {
 
 
     }
+@Override
+protected void onResume(){
+    super.onResume();
 
+    if(getNumberGroup()) {
+        mActionBarToolbar.setTitle(numberGroup);
+    } else{
+        mActionBarToolbar.setTitle("Выберите группу");
+    }
+    setSupportActionBar(mActionBarToolbar);
+}
     private boolean getNumberGroup() {
         sPref = getSharedPreferences("prefs",MODE_PRIVATE);
-        numberGroup = sPref.getInt("numberGroup", -1);
-        if (numberGroup == -1) return false;
+        numberGroup = sPref.getString("numberGroup", "-1");
+        if (numberGroup.equals("-1")) return false;
         else return true;
-
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
