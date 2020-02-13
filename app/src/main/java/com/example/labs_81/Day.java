@@ -11,4 +11,17 @@ public class Day {
 
     @JsonProperty("Lesson")
     private List<Lesson> Lesson = new ArrayList<Lesson>();
+
+    public int getDay(){
+        return Day;
+    }
+
+    public Lesson getLesson(int pos){
+        return Lesson.get(pos);
+    }
+
+    public int getSize(){
+        return Lesson.size();
+    }
+
 }

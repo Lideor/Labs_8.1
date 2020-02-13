@@ -11,11 +11,20 @@ public class ListDay {
 
     private int start=0;
     @JsonProperty("Number")
-    private int number;
+    private int Number;
 
     @JsonProperty("Days")
     private List<Day> Days = new ArrayList<Day>();
 
+    public int getSize(){
+        return Days.size();
+    }
+    public int getNumber(){
+        return Number;
+    }
+    public Day getDay(int number){
+        return Days.get(number);
+    }
   /*  public void addLesson(int timeStart, Lesson lesson){
         map.put(timeStart,lesson);
         if(timeStart<start) start=timeStart;

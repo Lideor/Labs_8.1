@@ -37,21 +37,10 @@ public class RVAdapterChoice extends RecyclerView.Adapter<RVAdapterChoice.CardVi
             cardView = cv;
             final Context context = ctn;
             int v = cardView.getVerticalScrollbarPosition();
-            cardView.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View view) {
-
-                    TextView title = (TextView)cardView.findViewById(R.id.info_text);
-                    //rv.removeChoice(getLayoutPosition(), title.getText().toString());
-
-                }
-            });
         }
     }
 
     public void removeChoice(int newChoiceInt,String newChoice){
-        Toast.makeText(ctn, "position = " + newChoiceInt, Toast.LENGTH_SHORT).show();
         choice=newChoice;
         int choice = choiceInt;
         this.notifyItemRangeChanged(newChoiceInt,1);

@@ -40,39 +40,25 @@ public class ChoiceGroup extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choice_group);
-        RecyclerView rv = (RecyclerView)findViewById(R.id.rv);
-        getNumberGroup();
 
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        rv.setLayoutManager(llm);
-
-
-
+        //создание бара
         Toolbar mActionBarToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         mActionBarToolbar.setTitle(R.string.action_settings);
         setSupportActionBar(mActionBarToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        RecyclerView rv = (RecyclerView)findViewById(R.id.rv);
+        getNumberGroup();
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        rv.setLayoutManager(llm);
 
         group = new JsonParse().importGroupJsonInFile(this);
-
-
-
         listNameGroup = group.getListGroup();
+
         RVAdapterChoice adapter = new RVAdapterChoice(listNameGroup,numberGroup,this);
         rv.setAdapter(adapter);
-        rv.setOnClickListener(new View.OnClickListener() {
 
-    @Override
-    public void onClick(View view) {
-        Log.v(LOG_TAG,"uuuuuuuu");
-
-
-        //or you can use For loop if you have long list of items. Use its length or size of the list as
-
-
-
-    }
-});
     Log.v(LOG_TAG,""+listNameGroup.size());
 
     }

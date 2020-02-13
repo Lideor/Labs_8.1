@@ -8,8 +8,10 @@
     android:focusable="false"
     android:focusableInTouchMode="false"
     android:foreground="?android:attr/selectableItemBackground"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
 
-    android:layout_width="394dp"
+    android:layout_width="wrap_content"
     android:layout_height="59dp"
     android:layout_gravity="center"
     android:layout_marginTop="2.5dp"

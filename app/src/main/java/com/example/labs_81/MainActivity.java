@@ -21,15 +21,31 @@ import android.app.ActionBar;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.view.ViewParent;
+import android.widget.RelativeLayout;
+
 import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
+
+import java.util.Calendar;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity  {
 
     private SharedPreferences sPref;// файл с настройками
-    private String numberGroup;// текущая группа
+    public String numberGroup;// текущая группа TODO:периписать на get
     public static String LOG_TAG = "mylogs";
+
+    private TabLayout myTab;
+    private ViewPager myView;
+    private FragmentsAdapter fAdapter;
 
     private MenuItem editMenuItem;
     private MenuItem removeMenuItem;
@@ -41,21 +57,19 @@ public class MainActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        myTab =  (TabLayout) findViewById(R.id.tabs);
+        myView = (ViewPager) findViewById(R.id.viewpager) ;
         mActionBarToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
         if(getNumberGroup()) {
             mActionBarToolbar.setTitle(numberGroup);
+            setContent();
         } else{
             mActionBarToolbar.setTitle("Выберите группу");
         }
         setSupportActionBar(mActionBarToolbar);
 
-        group = new JsonParse().importGroupJsonInFile(this);
-        data = new JsonParse().importDataJsonInFile(this);
 
-        TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
-        tabs.addTab(tabs.newTab().setText("1 неделя"));
-        tabs.addTab(tabs.newTab().setText("2 неделя"));
+
 
         int n = 0;
         try {
@@ -67,6 +81,17 @@ public class MainActivity extends AppCompatActivity  {
 
 
 
+
+    }
+
+    private void setContent(){
+        fAdapter = new FragmentsAdapter(getSupportFragmentManager());
+        fAdapter.AddFragement(new FragmentMain(1,this));
+        fAdapter.AddFragement(new FragmentMain(2,this));
+        myView.setAdapter(fAdapter);
+        myTab.setupWithViewPager(myView);
+        myTab.getTabAt(0).setText("1 неделя");
+        myTab.getTabAt(1).setText("2 неделя*");
     }
 @Override
 protected void onResume(){
@@ -74,6 +99,7 @@ protected void onResume(){
 
     if(getNumberGroup()) {
         mActionBarToolbar.setTitle(numberGroup);
+        setContent();
     } else{
         mActionBarToolbar.setTitle("Выберите группу");
     }

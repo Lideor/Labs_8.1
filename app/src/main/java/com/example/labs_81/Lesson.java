@@ -19,10 +19,8 @@ public class Lesson {
     @JsonProperty("Teach")
     private String Teach;
 
-    public int getTime() {
-        return Time;
-    }
-/*
+
+
     public int getTime() {
         return Time;
     }
@@ -63,5 +61,5 @@ public class Lesson {
     public void setTeach(String teach) {
         Teach = teach;
     }
-    */
+
 }

@@ -12,4 +12,20 @@ public class DataBase {
 
     @JsonProperty("Type")
     private List<String> Type = new ArrayList<String>();
+
+
+    @JsonProperty("Call")
+    private List<Windows> Call = new ArrayList<Windows>();
+
+    public Windows getCall(int number){
+        return Call.get(number);
+    }
+
+    public String getType(int number){
+        return Type.get(number);
+    }
+
+    public String getWeek(int number){
+        return Week.get(number);
+    }
 }

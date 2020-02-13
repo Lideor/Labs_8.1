@@ -6,6 +6,7 @@
     <color name="colorBackground">#F1F1F1</color>
     <color name="colorMainText">#000</color>
     <color name="colorMainCard">#FFF</color>
+    <color name="colorPrimaryCard">#616060</color>
 <!--
     <color name="colorBackground">#000</color>
     <color name="colorMainText">#fff</color>
