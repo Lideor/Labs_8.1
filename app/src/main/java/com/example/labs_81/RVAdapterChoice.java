@@ -95,9 +95,10 @@ public class RVAdapterChoice extends RecyclerView.Adapter<RVAdapterChoice.CardVi
         if(buf.equals(choice)) {
 
             choiceInt = position;
-            title.setTextColor(ctn.getResources().getColor(R.color.colorAccent));
+            title.setTextColor(ctn.getResources().getColor(R.color.colorMainCard));
             title.setPadding(0,-7,0,0);
             ImageButton btn =(ImageButton)cardView.findViewById(R.id.imageButton);
+            cardView.setCardBackgroundColor(ctn.getResources().getColor(R.color.colorMainText));
             btn.setVisibility(View.VISIBLE);
             View view = (View)cardView.findViewById(R.id.view);
             view.setVisibility(View.VISIBLE);
@@ -105,8 +106,9 @@ public class RVAdapterChoice extends RecyclerView.Adapter<RVAdapterChoice.CardVi
         else{
             View view = (View)cardView.findViewById(R.id.view);
             view.setVisibility(View.INVISIBLE);
-            title.setTextColor(ctn.getResources().getColor(R.color.colorMainText));
+            title.setTextColor(ctn.getResources().getColor(R.color.colorMainCard));
             title.setPadding(0,0,0,0);
+            cardView.setCardBackgroundColor(ctn.getResources().getColor(R.color.colorAccent));
             ImageButton btn =(ImageButton)cardView.findViewById(R.id.imageButton);
             btn.setVisibility(View.INVISIBLE);
         }

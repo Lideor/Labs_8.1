@@ -95,16 +95,23 @@ public static class CardViewHolder extends RecyclerView.ViewHolder {
             }
         });
         RelativeLayout main = (RelativeLayout) cardView.findViewById(R.id.main);
+        RelativeLayout text = (RelativeLayout) main.findViewById(R.id.text);
+        TextView day = (TextView)text.findViewById(R.id.day);
+
         if(choice==days.getDay(position).getDay()) {
             choiceInt =position;
             RelativeLayout list = (RelativeLayout) main.findViewById(R.id.list);
             RecyclerView rv = (RecyclerView) list.findViewById(R.id.rv);
             LinearLayoutManager llm = new LinearLayoutManager(ctn);
             rv.setLayoutManager(llm);
-            RelativeLayout.LayoutParams feedCommentParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+            RelativeLayout.LayoutParams feedCommentParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT);
             rv.setLayoutParams(feedCommentParams);
             RVAdapterLesson adapter = new RVAdapterLesson(days.getDay(position), data, ctn);
-            rv.setAdapter(adapter);
+            rv.setAdapter(adapter);            RelativeLayout.LayoutParams relev = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT);
+            relev.setMargins(0,0,0,(int)ctn.getResources().getDimension(R.dimen.total_margin));
+            text.setLayoutParams(relev);
         }
         else {
             RelativeLayout list = (RelativeLayout) main.findViewById(R.id.list);
@@ -114,14 +121,18 @@ public static class CardViewHolder extends RecyclerView.ViewHolder {
             if(rv.getAdapter()!=null) rv.getAdapter().notifyItemRangeRemoved(0,rv.getAdapter().getItemCount());
             RelativeLayout.LayoutParams feedCommentParams = new RelativeLayout.LayoutParams(0, 0);
             rv.setLayoutParams(feedCommentParams);
+            RelativeLayout.LayoutParams relev = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
+                    RelativeLayout.LayoutParams.WRAP_CONTENT);
+            relev.setMargins(0,0,0,0);
+            text.setLayoutParams(relev);
         }
-        RelativeLayout text = (RelativeLayout) main.findViewById(R.id.text);
         Calendar c = Calendar.getInstance();
         c.setTime(new Date());
         int dayOfWeek = c.get(Calendar.DAY_OF_WEEK)-1;
-        if (dayOfWeek==days.getDay(position).getDay())text.setBackgroundColor(ctn.getResources().getColor(R.color.colorMainText));
-        else text.setBackgroundColor(ctn.getResources().getColor(R.color.colorPrimary));
-        TextView day = (TextView)text.findViewById(R.id.day);
+        int Week = c.get(Calendar.WEEK_OF_YEAR);
+
+        if ((dayOfWeek==days.getDay(position).getDay())&&(Week % 2 != days.getNumber()))text.setBackgroundColor(ctn.getResources().getColor(R.color.colorMainText));
+        else text.setBackgroundColor(ctn.getResources().getColor(R.color.colorAccent));
         day.setText(data.getWeek(days.getDay(position).getDay()-1));
 
     }

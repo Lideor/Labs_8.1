@@ -10,13 +10,13 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-
-
-
+    app:cardCornerRadius="0dp"
+    android:background="@color/colorBackground"
     card_view:background="@color/colorMainCard">
 
     <RelativeLayout
         android:id="@+id/main"
+        android:background="@color/colorBackground"
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
@@ -28,7 +28,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@color/colorAccent"
-            android:padding="16dp">
+
+
+            android:radius="5dp">
 
 
             <TextView
@@ -37,16 +39,27 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="left|top"
-
+                android:padding="16dp"
                 android:text="Понидельник"
                 android:textColor="@color/colorMainCard"
                 android:textSize="20sp"
                 android:visibility="visible" />
+
+            <View
+                android:id="@+id/line"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_gravity="bottom"
+                android:layout_below="@+id/day"
+                android:background="@color/colorBackground"/>
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/list"
             android:layout_width="wrap_content"
+            android:paddingTop="0dp"
+            android:paddingEnd="0dp"
+            android:background="@color/colorBackground"
 
             android:layout_height="wrap_content"
             android:layout_below="@+id/text">

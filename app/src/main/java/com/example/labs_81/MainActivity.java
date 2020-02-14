@@ -37,7 +37,7 @@ import androidx.viewpager.widget.ViewPager;
 import java.util.Calendar;
 import java.util.Date;
 
-public class MainActivity extends AppCompatActivity  {
+public class MainActivity extends AppCompatActivity {
 
     private SharedPreferences sPref;// файл с настройками
     public String numberGroup;// текущая группа TODO:периписать на get
@@ -53,60 +53,71 @@ public class MainActivity extends AppCompatActivity  {
     private AllGroup group;
     private DataBase data;
     Toolbar mActionBarToolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        myTab =  (TabLayout) findViewById(R.id.tabs);
-        myView = (ViewPager) findViewById(R.id.viewpager) ;
+        myTab = (TabLayout) findViewById(R.id.tabs);
+        myView = (ViewPager) findViewById(R.id.viewpager);
         mActionBarToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
-        if(getNumberGroup()) {
+        if (getNumberGroup()) {
             mActionBarToolbar.setTitle(numberGroup);
             setContent();
-        } else{
+        } else {
             mActionBarToolbar.setTitle("Выберите группу");
         }
         setSupportActionBar(mActionBarToolbar);
 
 
-
-
         int n = 0;
         try {
 
-        }  catch (ArithmeticException e) {
-            Log.d(LOG_TAG,e.toString());
+        } catch (ArithmeticException e) {
+            Log.d(LOG_TAG, e.toString());
         }
-        Log.d(LOG_TAG,n+" надеюсь это сраотает ");
-
-
+        Log.d(LOG_TAG, n + " надеюсь это сраотает ");
 
 
     }
 
-    private void setContent(){
+    private void setContent() {
         fAdapter = new FragmentsAdapter(getSupportFragmentManager());
-        fAdapter.AddFragement(new FragmentMain(1,this));
-        fAdapter.AddFragement(new FragmentMain(2,this));
+        fAdapter.AddFragement(new FragmentMain(1, this));
+        fAdapter.AddFragement(new FragmentMain(2, this));
         myView.setAdapter(fAdapter);
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        int dayOfWeek = c.get(Calendar.WEEK_OF_YEAR);
         myTab.setupWithViewPager(myView);
-        myTab.getTabAt(0).setText("1 неделя");
-        myTab.getTabAt(1).setText("2 неделя*");
+        if (dayOfWeek % 2 != 1) {
+            myTab.getTabAt(0).setText("1 неделя •");
+            myTab.getTabAt(1).setText("2 неделя");
+            myTab.setScrollPosition(0, 0f, true);
+            myView.setCurrentItem(0);
+        } else {
+            myTab.getTabAt(0).setText("1 неделя");
+            myTab.getTabAt(1).setText("2 неделя •");
+            myTab.setScrollPosition(1, 0f, true);
+            myView.setCurrentItem(1);
+        }
     }
-@Override
-protected void onResume(){
-    super.onResume();
 
-    if(getNumberGroup()) {
-        mActionBarToolbar.setTitle(numberGroup);
-        setContent();
-    } else{
-        mActionBarToolbar.setTitle("Выберите группу");
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (getNumberGroup()) {
+            mActionBarToolbar.setTitle(numberGroup);
+            setContent();
+        } else {
+            mActionBarToolbar.setTitle("Выберите группу");
+        }
+        setSupportActionBar(mActionBarToolbar);
     }
-    setSupportActionBar(mActionBarToolbar);
-}
+
     private boolean getNumberGroup() {
-        sPref = getSharedPreferences("prefs",MODE_PRIVATE);
+        sPref = getSharedPreferences("prefs", MODE_PRIVATE);
         numberGroup = sPref.getString("numberGroup", "-1");
         if (numberGroup.equals("-1")) return false;
         else return true;

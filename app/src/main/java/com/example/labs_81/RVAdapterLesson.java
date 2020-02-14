@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -86,9 +87,9 @@ public class RVAdapterLesson extends RecyclerView.Adapter<RVAdapterLesson.CardVi
 
         RelativeLayout time = (RelativeLayout) main.findViewById(R.id.time);
         TextView start = (TextView) time.findViewById(R.id.start);
-        start.setText(data.getCall(lesson.getLesson(position).getTime()).getStart().toString());
+        start.setText(data.getCall(lesson.getLesson(position).getTime()-1).getStart().toString());
         TextView end = (TextView) time.findViewById(R.id.end);
-        end.setText(data.getCall(lesson.getLesson(position).getTime()).getEnd().toString());
+        end.setText(data.getCall(lesson.getLesson(position).getTime()-1).getEnd().toString());
         TextView aud = (TextView) time.findViewById(R.id.aud);
 
         aud.setText(lesson.getLesson(position).getAud());
@@ -99,21 +100,24 @@ public class RVAdapterLesson extends RecyclerView.Adapter<RVAdapterLesson.CardVi
 
         SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
         try {
-            datestart = formatter.parse(data.getCall(lesson.getLesson(position).getTime()).getStart().toString());
-            dateend = formatter.parse(data.getCall(lesson.getLesson(position).getTime()).getEnd().toString());
+            datestart = formatter.parse(data.getCall(lesson.getLesson(position).getTime()-1).getStart().toString());
+            dateend = formatter.parse(data.getCall(lesson.getLesson(position).getTime()-1).getEnd().toString());
 
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
-        currentDate.setHours(data.getCall(lesson.getLesson(position).getTime()).getStart().H);
-        currentDate.setMinutes(data.getCall(lesson.getLesson(position).getTime()).getStart().M);
+        currentDate.setHours(data.getCall(lesson.getLesson(position).getTime()-1).getStart().H);
+        currentDate.setMinutes(data.getCall(lesson.getLesson(position).getTime()-1).getStart().M);
         long star = currentDate.getTime();
-        currentDate.setHours(data.getCall(lesson.getLesson(position).getTime()).getEnd().H);
-        currentDate.setMinutes(data.getCall(lesson.getLesson(position).getTime()).getEnd().M);
+        currentDate.setHours(data.getCall(lesson.getLesson(position).getTime()-1).getEnd().H);
+        currentDate.setMinutes(data.getCall(lesson.getLesson(position).getTime()-1).getEnd().M);
         long en = currentDate.getTime();
         long current = System.currentTimeMillis();
-        if ((star < current) && (en > current)) {
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        int dayOfWeek = c.get(Calendar.DAY_OF_WEEK)-1;
+        if (((star < current) && (en > current))&&dayOfWeek==lesson.getDay()) {
 
             time.setBackgroundColor(ctn.getResources().getColor(R.color.colorMainText));
         }
