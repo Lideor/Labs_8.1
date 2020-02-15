@@ -18,42 +18,53 @@ import java.util.Date;
 import static android.content.Context.MODE_PRIVATE;
 
 public class FragmentMain extends Fragment {
-    View v;
-    int number;
-    Context ctn;
-    public FragmentMain(int number, Context ctn){
+
+    private View v;
+    private int number;//номер недели
+    private Context ctn;
+
+    public FragmentMain(int number, Context ctn) {
+
         this.number = number;
         this.ctn = ctn;
-    }
 
-    public int getNumber() {
-        return number;
     }
+    //метод вызывающися прм первой прорисовки фрагмента
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState){
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-    v=inflater.inflate(R.layout.tabs_main_fragment,container,false);
-    RecyclerView rv = (RecyclerView) v.findViewById(R.id.rv);
-    String numberGroup = getNumberGroup();
-    AllGroup group = new JsonParse().importGroupJsonInFile(container.getContext());
-    DataBase data = new JsonParse().importDataJsonInFile(container.getContext());
+        v = inflater.inflate(R.layout.tabs_main_fragment, container, false);
 
-    LinearLayoutManager llm = new LinearLayoutManager(container.getContext());
-    rv.setLayoutManager(llm);
+        //доступ к recieview, в котором будет распологаться список дней выбранной недели
+        RecyclerView rv = (RecyclerView) v.findViewById(R.id.rv);
 
-    Calendar c = Calendar.getInstance();
-    c.setTime(new Date());
-    int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
-    ListDay as = group.getGroup(numberGroup).getWeek(1);
+        String numberGroup = getNumberGroup();//получаем название группы
 
-    RVAdapterWeek adapter = new RVAdapterWeek(group.getGroup(numberGroup).getWeek(number),data,dayOfWeek,container.getContext());
-    rv.setAdapter(adapter);
+        AllGroup group = new JsonParse().importGroupJsonInFile(container.getContext());// получаем информацию о всех группах
+        DataBase data = new JsonParse().importDataJsonInFile(container.getContext());// переводим название групп в виде массива строк
+
+        // создаем менджер отвечающий за расположение объектов
+        LinearLayoutManager llm = new LinearLayoutManager(container.getContext());// создаем менджер отвечающий за расположение объектов
+        // в recieview
+        rv.setLayoutManager(llm); // устанавливаем созданный менждер
+
+        //получаем номер текущего дня
+        Calendar c = Calendar.getInstance();//
+        c.setTime(new Date());
+        int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+
+        //создаем адаптер недели
+        RVAdapterWeek adapter = new RVAdapterWeek(group.getGroup(numberGroup).getWeek(number), data, dayOfWeek, container.getContext());
+        rv.setAdapter(adapter);// устанавливаем адаптер для спика днец
         return v;
-}
+    }
+
     private String getNumberGroup() {
-        SharedPreferences sPref = ctn.getSharedPreferences("prefs",MODE_PRIVATE);
-        return sPref.getString("numberGroup", "-1");
+
+        SharedPreferences sPref = ctn.getSharedPreferences("prefs", MODE_PRIVATE); //доступ к настройкам с имененм prefs
+        return sPref.getString("numberGroup", "-1");// получаем значение хранящиеся под именем "numberGroup"
+
     }
 
 }

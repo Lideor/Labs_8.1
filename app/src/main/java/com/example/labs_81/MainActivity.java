@@ -40,56 +40,55 @@ import java.util.Date;
 public class MainActivity extends AppCompatActivity {
 
     private SharedPreferences sPref;// файл с настройками
-    public String numberGroup;// текущая группа TODO:периписать на get
+    private String numberGroup;// текущая группа
     public static String LOG_TAG = "mylogs";
 
-    private TabLayout myTab;
-    private ViewPager myView;
-    private FragmentsAdapter fAdapter;
+    private TabLayout myTab; // таб выбора номера недели
+    private ViewPager myView;//содержимое таба
+    private FragmentsAdapter fAdapter;//адаптер содержимого таба
 
-    private MenuItem editMenuItem;
-    private MenuItem removeMenuItem;
+    private MenuItem editMenuItem;//меню тулбара
 
-    private AllGroup group;
-    private DataBase data;
-    Toolbar mActionBarToolbar;
+    private Toolbar mActionBarToolbar;//сам тулбар
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //инициаллищация элемнтов из лайаута
         myTab = (TabLayout) findViewById(R.id.tabs);
         myView = (ViewPager) findViewById(R.id.viewpager);
         mActionBarToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
+
+        //проверка надичия выбора группы, в случае наличия вызываем метод иницилизирующий табы
         if (getNumberGroup()) {
             mActionBarToolbar.setTitle(numberGroup);
             setContent();
         } else {
-            mActionBarToolbar.setTitle("Выберите группу");
+            mActionBarToolbar.setTitle("Выберите группу");//текст тулбара
         }
-        setSupportActionBar(mActionBarToolbar);
 
-
-        int n = 0;
-        try {
-
-        } catch (ArithmeticException e) {
-            Log.d(LOG_TAG, e.toString());
-        }
-        Log.d(LOG_TAG, n + " надеюсь это сраотает ");
-
+        setSupportActionBar(mActionBarToolbar);//заставляем тулбар выполнять функции актионбара
 
     }
 
     private void setContent() {
-        fAdapter = new FragmentsAdapter(getSupportFragmentManager());
+
+        fAdapter = new FragmentsAdapter(getSupportFragmentManager());// создаем новый адаптер фрагментов
+        //добавляем фрагменты перывой и второй недели
         fAdapter.AddFragement(new FragmentMain(1, this));
         fAdapter.AddFragement(new FragmentMain(2, this));
-        myView.setAdapter(fAdapter);
+        myView.setAdapter(fAdapter);//устанавливаем выбранный адаптер для содердимого табов
+        myTab.setupWithViewPager(myView);//устанавливаем полученное содержимое для таба
+
+
+        //получаем текущий номер недели
         Calendar c = Calendar.getInstance();
         c.setTime(new Date());
         int dayOfWeek = c.get(Calendar.WEEK_OF_YEAR);
-        myTab.setupWithViewPager(myView);
+
+        // в зависимости от четности нелеои делаем ее активной
         if (dayOfWeek % 2 != 1) {
             myTab.getTabAt(0).setText("1 неделя •");
             myTab.getTabAt(1).setText("2 неделя");
@@ -116,9 +115,11 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(mActionBarToolbar);
     }
 
+    //метод определяющий текущую заданную группу, возращает false если группа не задана
     private boolean getNumberGroup() {
-        sPref = getSharedPreferences("prefs", MODE_PRIVATE);
-        numberGroup = sPref.getString("numberGroup", "-1");
+        sPref = getSharedPreferences("prefs", MODE_PRIVATE); //доступ к настройкам с имененм prefs
+        numberGroup = sPref.getString("numberGroup", "-1");// получаем значение хранящиеся под именем "numberGroup"
+        // в случае отсутсвия данного значение веренет "-1"
         if (numberGroup.equals("-1")) return false;
         else return true;
     }

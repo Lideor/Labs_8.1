@@ -9,7 +9,6 @@ import java.util.Map;
 
 public class ListDay {
 
-    private int start=0;
     @JsonProperty("Number")
     private int Number;
 
@@ -25,17 +24,5 @@ public class ListDay {
     public Day getDay(int number){
         return Days.get(number);
     }
-  /*  public void addLesson(int timeStart, Lesson lesson){
-        map.put(timeStart,lesson);
-        if(timeStart<start) start=timeStart;
-    }
 
-    public int getStart(){
-        return start;
-    }
-
-    public int getSize(){
-        return map.size();
-    }
-*/
 }

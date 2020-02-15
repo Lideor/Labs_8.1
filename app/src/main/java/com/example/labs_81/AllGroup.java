@@ -13,12 +13,15 @@ public class AllGroup {
 
      private List<ListGroup> listGroup = new ArrayList<ListGroup>();
 
+     //группа по названию
     public ListGroup getGroup(String numberGroup){
         for (ListGroup key : listGroup) {
             if(key.getNumber().equals(numberGroup)) return key;
         }
         return null;
     }
+
+    //преобразование название групп в строку
     public List<String> getListGroup(){
 
         List<String> listNameGroup = new ArrayList<String>();

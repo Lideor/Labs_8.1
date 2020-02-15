@@ -40,53 +40,69 @@ public class JsonParse {
 
 
     Context ctn;
-    public final String listGroup = "Group.json"; // Файл расписания
-    public final String listData = "Data.json"; // Файл расписания
+    private final String listGroup = "Group.json"; // Файл расписания
+    private final String listData = "Data.json"; // Файл базы
 
 
-    //выгрузка из файла пакетов
+    //выгрузка из файла всех групп
     public AllGroup importGroupJsonInFile(Context ctn){
-        String jsonString = convertStreamToString(ctn,listGroup);
-        Gson gson = new GsonBuilder().create();
+
+        String jsonString = convertStreamToString(ctn,listGroup);// переводим значения файла срасписанием в строоку
+
+        Gson gson = new GsonBuilder().create(); // конвертор json от гугла
+
         AllGroup data = null;
+
         try {
-             data = gson.fromJson(jsonString, AllGroup.class);
+             data = gson.fromJson(jsonString, AllGroup.class);//десерелизуем полученную строку по образу объекта
         } catch (ArithmeticException e) {
              Log.d(LOG_TAG,e.toString());
         }
+
         return data;
+
     }
 
-    //выгрузка из файла пакетов
+    //выгрузка из файла базы данных
     public DataBase importDataJsonInFile(Context ctn){
-        String jsonString = convertStreamToString(ctn,listData);
+
+        String jsonString = convertStreamToString(ctn,listData);// переводим значения файла срасписанием в строоку
         Gson gson = new GsonBuilder().create();
+
         DataBase data = null;
+
         try {
-            data = gson.fromJson(jsonString, DataBase.class);
+            data = gson.fromJson(jsonString, DataBase.class);//десерелизуем полученную строку по образу объекта
         } catch (ArithmeticException e) {
             Log.d(LOG_TAG,e.toString());
         }
+
         return data;
     }
 
+    //чтение файла из папки ассетов
     private String convertStreamToString(Context ctn, String fileName) {
-
 
         String line = null;
         BufferedReader reader;
+
         String out = null;
-        StringBuilder sb=null;
+        StringBuilder sb = null;
+
         try {
+
             AssetManager assetManager = ctn.getAssets();
             reader = new BufferedReader(new InputStreamReader(assetManager.open(fileName)));
-             sb = new StringBuilder();
+            sb = new StringBuilder();
+
             while ((line = reader.readLine()) != null) {
                 sb.append(line).append('\n');
             }
+
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         if(sb!=null) out = sb.toString();
         return out;
     }

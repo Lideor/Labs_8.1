@@ -19,6 +19,7 @@ public class ListGroup {
     private String Number;
     @JsonProperty("Week")
     private List<ListDay> Week = new ArrayList<ListDay>();
+
     public String getNumber(){
         return Number;
     }
@@ -29,12 +30,5 @@ public class ListGroup {
         }
         return null;
     }
-  /*  public void addDay(int numberWeek, String nameDay, ListDay day){
-        dayList.get(numberWeek).put(nameDay,day);
-    }
 
-    public ListDay getDay(int numberWeek, String nameDay){
-        return dayList.get(numberWeek).get(nameDay);
-    }
-*/
 }

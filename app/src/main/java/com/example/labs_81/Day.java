@@ -6,8 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Day {
+
     @JsonProperty("Day")
-    private int Day;
+    private int Day;//номер дня в неделе
 
     @JsonProperty("Lesson")
     private List<Lesson> Lesson = new ArrayList<Lesson>();

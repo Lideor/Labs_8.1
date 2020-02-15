@@ -21,44 +21,48 @@ import static com.example.labs_81.MainActivity.LOG_TAG;
 public class RVAdapterChoice extends RecyclerView.Adapter<RVAdapterChoice.CardViewHolder> {
 
 
-
-    List<String> cards;
-    String choice;
-    Context ctn;
-    int choiceInt;
-    SharedPreferences sPref;
+    private List<String> cards;// список назщваний групп
+    private String choice; // название выбранной группы
+    private Context ctn; // контекст того, кто вызвал данный класс
+    private int choiceInt; // позиция выбранного обьекта в списке
+    private SharedPreferences sPref;// пользовательсие настройик
 
     public static class CardViewHolder extends RecyclerView.ViewHolder {
 
-        CardView cardView;
-        String choice;
-        CardViewHolder(CardView cv,Context ctn, RVAdapterChoice rv) {
+        private CardView cardView;
+        private String choice;
+
+        CardViewHolder(CardView cv, Context ctn) {
             super(cv);
             cardView = cv;
             final Context context = ctn;
-            int v = cardView.getVerticalScrollbarPosition();
         }
     }
 
-    public void removeChoice(int newChoiceInt,String newChoice){
-        choice=newChoice;
-        int choice = choiceInt;
-        this.notifyItemRangeChanged(newChoiceInt,1);
-        this.notifyItemRangeChanged(choice,1);
+    public void removeChoice(int newChoiceInt, String newChoice) {
 
-        sPref = ctn.getSharedPreferences("prefs",MODE_PRIVATE);
-        SharedPreferences.Editor ed = sPref.edit();
-        ed.putString("numberGroup",newChoice);
-        ed.commit();
+        //перенастройка выбора активной позиции
+        choice = newChoice;
+        int choice = choiceInt;
+
+        this.notifyItemRangeChanged(newChoiceInt, 1);//обновляем обьект на который нажал пользователь
+        this.notifyItemRangeChanged(choice, 1);//обновляем обьект который был предыдущим активнм
+
+        sPref = ctn.getSharedPreferences("prefs", MODE_PRIVATE);//доступ к настройкам с имененм prefs
+
+        SharedPreferences.Editor ed = sPref.edit();// класс для измсенения настроек
+        ed.putString("numberGroup", newChoice);// записываем в настройки новое значение выбранной группы
+        ed.commit();//записываем изменения
+
     }
 
-    RVAdapterChoice(List cards,String choice,Context ctn){
+    RVAdapterChoice(List cards, String choice, Context ctn) {
+
         this.cards = cards;
-        this.choice=choice;
+        this.choice = choice;
         this.ctn = ctn;
 
     }
-
 
 
     @Override
@@ -67,10 +71,9 @@ public class RVAdapterChoice extends RecyclerView.Adapter<RVAdapterChoice.CardVi
 
                 .inflate(R.layout.choice_card, parent, false);
 
-        return new CardViewHolder(cv,ctn,this);
+        return new CardViewHolder(cv, ctn);
 
     }
-
 
 
     @Override
@@ -79,42 +82,55 @@ public class RVAdapterChoice extends RecyclerView.Adapter<RVAdapterChoice.CardVi
 
         final CardView cardView = cardViewHolder.cardView;
 
-        TextView title = (TextView)cardView.findViewById(R.id.info_text);
+        //устанавливаем слушателя на нажатие на элемент
         cardView.setOnClickListener(new View.OnClickListener() {
 
-       @Override
-       public void onClick(View view) {
+            @Override
+            public void onClick(View view) {
 
-            TextView title = (TextView)cardView.findViewById(R.id.info_text);
-            removeChoice(position, title.getText().toString());
+                TextView title = (TextView) cardView.findViewById(R.id.info_text);
+                removeChoice(position, title.getText().toString()); //вызываем метод переключение активного выбора тек. группы
 
-        }
+            }
         });
+
+        TextView title = (TextView) cardView.findViewById(R.id.info_text);
+
+        //установка названия группы
         String buf = cards.get(position);
         title.setText(buf);
-        if(buf.equals(choice)) {
 
-            choiceInt = position;
-            title.setTextColor(ctn.getResources().getColor(R.color.colorMainCard));
-            title.setPadding(0,-7,0,0);
-            ImageButton btn =(ImageButton)cardView.findViewById(R.id.imageButton);
-            cardView.setCardBackgroundColor(ctn.getResources().getColor(R.color.colorMainText));
-            btn.setVisibility(View.VISIBLE);
-            View view = (View)cardView.findViewById(R.id.view);
-            view.setVisibility(View.VISIBLE);
-        }
-        else{
-            View view = (View)cardView.findViewById(R.id.view);
-            view.setVisibility(View.INVISIBLE);
-            title.setTextColor(ctn.getResources().getColor(R.color.colorMainCard));
-            title.setPadding(0,0,0,0);
-            cardView.setCardBackgroundColor(ctn.getResources().getColor(R.color.colorAccent));
-            ImageButton btn =(ImageButton)cardView.findViewById(R.id.imageButton);
-            btn.setVisibility(View.INVISIBLE);
+
+        //если название группы элемента текущей позиции в списке совпадает с названием группы установленной пользолвателем устанавливаем
+        // внешний вид обьекта на активный
+        if (buf.equals(choice)) {
+
+            choiceInt = position;// запоминаем текущий выбор пользователя пользя ввиде позиции обьекта в списке
+
+            title.setTextColor(ctn.getResources().getColor(R.color.colorMainCard));// устанавливаем цвет текста
+            title.setPadding(0, -7, 0, 0);// поднимаем текст на 7pd
+
+            cardView.setCardBackgroundColor(ctn.getResources().getColor(R.color.colorMainText));//устанавливаем цвет фона всего обьекта
+
+            ImageButton btn = (ImageButton) cardView.findViewById(R.id.imageButton);
+            btn.setVisibility(View.VISIBLE);// устанавливаем видимость картинки на видимую
+
+            View view = (View) cardView.findViewById(R.id.view);
+            view.setVisibility(View.VISIBLE);// устанавливаем видимость линии на видимую
+        } else {
+            View view = (View) cardView.findViewById(R.id.view);
+            view.setVisibility(View.INVISIBLE);// устанавливаем видимость линии на невидимую
+
+            title.setTextColor(ctn.getResources().getColor(R.color.colorMainCard));// задаем стандартый цвет
+            title.setPadding(0, 0, 0, 0);// задаем стандартый отступ
+
+            cardView.setCardBackgroundColor(ctn.getResources().getColor(R.color.colorAccent));// задаем стандартый цвет
+
+            ImageButton btn = (ImageButton) cardView.findViewById(R.id.imageButton);
+            btn.setVisibility(View.INVISIBLE);// устанавливаем видимость картинки на невидимую
         }
 
     }
-
 
 
     @Override

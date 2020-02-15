@@ -29,34 +29,18 @@ import static com.example.labs_81.MainActivity.LOG_TAG;
 public class RVAdapterLesson extends RecyclerView.Adapter<RVAdapterLesson.CardViewHolder> {
 
 
-    Day lesson;
-    DataBase data;
-    String choice;
-    Context ctn;
-    int choiceInt;
-    SharedPreferences sPref;
+    private Day lesson;// список занятий
+    private DataBase data;//база данных
+    private Context ctn;//контекст обьекта который вызвал адаптер
 
     public static class CardViewHolder extends RecyclerView.ViewHolder {
 
-        CardView cardView;
-        String choice;
+        private CardView cardView;
 
         CardViewHolder(CardView cv) {
             super(cv);
             cardView = cv;
         }
-    }
-
-    public void removeChoice(int newChoiceInt, String newChoice) {
-        choice = newChoice;
-        int choice = choiceInt;
-        this.notifyItemRangeChanged(newChoiceInt, 1);
-        this.notifyItemRangeChanged(choice, 1);
-
-        sPref = ctn.getSharedPreferences("prefs", MODE_PRIVATE);
-        SharedPreferences.Editor ed = sPref.edit();
-        ed.putString("numberGroup", newChoice);
-        ed.commit();
     }
 
     RVAdapterLesson(Day lesson, DataBase data, Context ctn) {
@@ -78,57 +62,52 @@ public class RVAdapterLesson extends RecyclerView.Adapter<RVAdapterLesson.CardVi
 
 
     @Override
-
     public void onBindViewHolder(CardViewHolder cardViewHolder, final int position) {
 
         CardView cardView = cardViewHolder.cardView;
 
-        RelativeLayout main = (RelativeLayout) cardView.findViewById(R.id.main);
+        RelativeLayout main = (RelativeLayout) cardView.findViewById(R.id.main);// контейнер всех элементов
 
-        RelativeLayout time = (RelativeLayout) main.findViewById(R.id.time);
+        RelativeLayout time = (RelativeLayout) main.findViewById(R.id.time);// контейнер времени
         TextView start = (TextView) time.findViewById(R.id.start);
-        start.setText(data.getCall(lesson.getLesson(position).getTime()-1).getStart().toString());
+        start.setText(data.getCall(lesson.getLesson(position).getTime()-1).getStart().toString());//устанавливаем время начала занятия
         TextView end = (TextView) time.findViewById(R.id.end);
-        end.setText(data.getCall(lesson.getLesson(position).getTime()-1).getEnd().toString());
+        end.setText(data.getCall(lesson.getLesson(position).getTime()-1).getEnd().toString());//устанавливаем время конца занятия
         TextView aud = (TextView) time.findViewById(R.id.aud);
+        aud.setText(lesson.getLesson(position).getAud());//устанавливаем время номер аудитории
 
-        aud.setText(lesson.getLesson(position).getAud());
+        Date currentDate = new Date();// создаем обьект времени
 
-        Date datestart = new Date();
-        Date dateend = new Date();
-        Date currentDate = new Date();
-
-        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
-        try {
-            datestart = formatter.parse(data.getCall(lesson.getLesson(position).getTime()-1).getStart().toString());
-            dateend = formatter.parse(data.getCall(lesson.getLesson(position).getTime()-1).getEnd().toString());
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
+        //устанвливаем время начала занаятие в созданный обьект
         currentDate.setHours(data.getCall(lesson.getLesson(position).getTime()-1).getStart().H);
         currentDate.setMinutes(data.getCall(lesson.getLesson(position).getTime()-1).getStart().M);
-        long star = currentDate.getTime();
+        long star = currentDate.getTime();// переводи полученный обьект в милллисекунды
+
+        //устанвливаем время конца занаятие в созданный обьект
         currentDate.setHours(data.getCall(lesson.getLesson(position).getTime()-1).getEnd().H);
         currentDate.setMinutes(data.getCall(lesson.getLesson(position).getTime()-1).getEnd().M);
-        long en = currentDate.getTime();
-        long current = System.currentTimeMillis();
+        long en = currentDate.getTime();// переводи полученный обьект в милллисекунды
+
+        long current = System.currentTimeMillis();//текущие время в миллисекундах
+
         Calendar c = Calendar.getInstance();
         c.setTime(new Date());
-        int dayOfWeek = c.get(Calendar.DAY_OF_WEEK)-1;
+        int dayOfWeek = c.get(Calendar.DAY_OF_WEEK)-1;//тполучаем номер дня недели
+
+        //проверяем текущее занятие явяляется ли текущми
         if (((star < current) && (en > current))&&dayOfWeek==lesson.getDay()) {
 
-            time.setBackgroundColor(ctn.getResources().getColor(R.color.colorMainText));
+            time.setBackgroundColor(ctn.getResources().getColor(R.color.colorMainText));// изменяем цвет на текущий
+
         }
-        DateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
-        RelativeLayout les = (RelativeLayout) main.findViewById(R.id.lesson);
+
+        RelativeLayout les = (RelativeLayout) main.findViewById(R.id.lesson);//контейнер о информации о занятии
         TextView type = (TextView) les.findViewById(R.id.type);
-        type.setText(data.getType(lesson.getLesson(position).getType()-1));
+        type.setText(data.getType(lesson.getLesson(position).getType()-1));//устанавливаем тип занятия
         TextView title = (TextView) les.findViewById(R.id.title);
-        title.setText(lesson.getLesson(position).getName());
+        title.setText(lesson.getLesson(position).getName());//устанавливаем название пары
         TextView name = (TextView) les.findViewById(R.id.name);
-        name.setText(lesson.getLesson(position).getTeach());
+        name.setText(lesson.getLesson(position).getTeach());//устанавливаем имя прпеподавателя
     }
 
 

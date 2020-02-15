@@ -8,14 +8,14 @@ import java.util.List;
 public class DataBase {
 
     @JsonProperty("Week")
-    private List<String> Week = new ArrayList<String>();
+    private List<String> Week = new ArrayList<String>();// массив хранящий список названий недели
 
     @JsonProperty("Type")
-    private List<String> Type = new ArrayList<String>();
+    private List<String> Type = new ArrayList<String>();// массив хранящий список типов занятий
 
 
     @JsonProperty("Call")
-    private List<Windows> Call = new ArrayList<Windows>();
+    private List<Windows> Call = new ArrayList<Windows>();// массив хранящий список звонков
 
     public Windows getCall(int number){
         return Call.get(number);
