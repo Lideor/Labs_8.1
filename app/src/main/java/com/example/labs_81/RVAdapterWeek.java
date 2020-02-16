@@ -29,7 +29,7 @@ public class RVAdapterWeek extends RecyclerView.Adapter<RVAdapterWeek.CardViewHo
 
         private int choice = 1;//выбранный день
         private Context ctn;//контекст вызывашего адаптер обьекта
-        private int choiceInt = -1;//тоже выбранный день, а два их потому что... ну ан себя посмотри у тебя тоже две руки, зачем  тебе вторая, до переменной докопался, сколько хочу столько и создаю, осуждать он меня вздумал еще
+        private int choiceInt = -1;
 
 public static class CardViewHolder extends RecyclerView.ViewHolder {
 
@@ -152,9 +152,10 @@ public static class CardViewHolder extends RecyclerView.ViewHolder {
         c.setTime(new Date());
         int dayOfWeek = c.get(Calendar.DAY_OF_WEEK)-1;
         int Week = c.get(Calendar.WEEK_OF_YEAR);
-
+        int t = Week % 2;
+        int a = days.getNumber();
         //устанавливаем цвет текущей позиции обьекта в активный в случае если он совпалдает с текущим днем и находится в активной недели
-        if ((dayOfWeek==days.getDay(position).getDay())&&(Week % 2 != days.getNumber()))text.setBackgroundColor
+        if ((dayOfWeek==days.getDay(position).getDay())&&(Week % 2 == days.getNumber()-1))text.setBackgroundColor
                 (ctn.getResources().getColor(R.color.colorMainText));
         else text.setBackgroundColor(ctn.getResources().getColor(R.color.colorAccent));
 
